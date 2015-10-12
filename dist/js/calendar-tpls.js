@@ -38,7 +38,6 @@ angular.module('ui.rCalendar', ['ui.rCalendar.tpls'])
                 $parse($attrs.ngModel).assign($scope.$parent, self.currentCalendarDate);
             }
         }
-
         self.init = function (ngModelCtrl_) {
             ngModelCtrl = ngModelCtrl_;
 
@@ -239,6 +238,7 @@ angular.module('ui.rCalendar', ['ui.rCalendar.tpls'])
             templateUrl: 'template/rcalendar/calendar.html',
             scope: {
                 calendarMode: '=',
+                eventsTypes: '=',
                 rangeChanged: '&',
                 eventSelected: '&',
                 timeSelected: '&'
@@ -275,6 +275,18 @@ angular.module('ui.rCalendar', ['ui.rCalendar.tpls'])
                 scope.showWeeks = ctrl.showWeeks;
                 scope.showEventDetail = ctrl.showEventDetail;
 
+                scope.hasEventsWithType = function(eventType){
+                    if(scope.selectedDate.events === undefined)
+                        return false;
+                    var hasThisType = false,
+                        events = scope.selectedDate.events;
+                    events.forEach(function(element) {
+                        if(element.type === eventType){
+                            hasThisType = true;
+                        }
+                    }, this);
+                    return hasThisType;
+                };
                 ctrl.mode = {
                     step: {months: 1}
                 };
@@ -1085,15 +1097,32 @@ angular.module("template/rcalendar/month.html", []).run(["$templateCache", funct
     "        </tr>\n" +
     "        </tbody>\n" +
     "    </table>\n" +
-    "    <div ng-if=\"showEventDetail\" class=\"event-detail-container\">\n" +
-    "        <div class=\"scrollable\" style=\"height: 200px\">\n" +
+    "    <div ng-if=\"showEventDetail && eventsTypes != null\" class=\"event-detail-container\" ng-repeat=\"eventType in eventsTypes\">\n" +
+    "        <div class=\"scrollable\">\n" +
     "            <table class=\"table table-bordered table-striped table-fixed\">\n" +
+    "            <caption class=\"calendar-header text-left\">{{eventType}}</caption>\n" +
+    "                <tr ng-repeat=\"event in selectedDate.events | filter:{ type: eventType }\" ng-if=\"hasEventsWithType(eventType)\">\n" +
+    "                    <td ng-if=\"!event.allDay\" class=\"monthview-eventdetail-timecolumn\">{{event.startTime|date: 'HH:mm'}}\n" +
+    "                        -\n" +
+    "                        {{event.endTime|date: 'HH:mm'}}\n" +
+    "                    </td>\n" +
+    "                    <td ng-if=\"event.allDay\" class=\"monthview-eventdetail-timecolumn\">Hela dagen</td>\n" +
+    "                    <td class=\"event-detail\" ng-click=\"eventSelected({event:event})\">{{event.title}}</td>\n" +
+    "                </tr>\n" +
+    "                <tr ng-if=\"!hasEventsWithType(eventType)\"><td class=\"no-event-label\">No Events</td></tr>\n" +
+    "            </table>\n" +
+    "        </div>\n" +
+    "    </div>\n" +
+    "    <div ng-if=\"showEventDetail && eventsTypes == null\" class=\"event-detail-container\">\n" +
+    "        <div class=\"scrollable\">\n" +
+    "            <table class=\"table table-bordered table-striped table-fixed\">\n" +
+    "            <caption class=\"calendar-header text-left\">{{eventType}}</caption>\n" +
     "                <tr ng-repeat=\"event in selectedDate.events\" ng-if=\"selectedDate.events\">\n" +
     "                    <td ng-if=\"!event.allDay\" class=\"monthview-eventdetail-timecolumn\">{{event.startTime|date: 'HH:mm'}}\n" +
     "                        -\n" +
     "                        {{event.endTime|date: 'HH:mm'}}\n" +
     "                    </td>\n" +
-    "                    <td ng-if=\"event.allDay\" class=\"monthview-eventdetail-timecolumn\">All day</td>\n" +
+    "                    <td ng-if=\"event.allDay\" class=\"monthview-eventdetail-timecolumn\">Hela dagen</td>\n" +
     "                    <td class=\"event-detail\" ng-click=\"eventSelected({event:event})\">{{event.title}}</td>\n" +
     "                </tr>\n" +
     "                <tr ng-if=\"!selectedDate.events\"><td class=\"no-event-label\">No Events</td></tr>\n" +
@@ -1150,7 +1179,10 @@ angular.module("template/rcalendar/week.html", []).run(["$templateCache", functi
     "                        <div ng-repeat=\"displayEvent in tm.events\" class=\"calendar-event\"\n" +
     "                             ng-click=\"eventSelected({event:displayEvent.event})\"\n" +
     "                             ng-style=\"{left: 100/displayEvent.overlapNumber*displayEvent.position+'%', width: 100/displayEvent.overlapNumber+'%', height: 37*(displayEvent.endIndex-displayEvent.startIndex)+'px'}\">\n" +
-    "                            <div class=\"calendar-event-inner\">{{displayEvent.event.title}}</div>\n" +
+    "                            <div class=\"calendar-event-inner\"\n" +
+    "                                ng-class=\"displayEvent.event.type == null? '' : 'event-type-'+displayEvent.event.type\">\n" +
+    "                                {{displayEvent.event.title}}\n" +
+    "                            </div>\n" +
     "                        </div>\n" +
     "                    </div>\n" +
     "                </td>\n" +

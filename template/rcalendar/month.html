@@ -22,15 +22,32 @@
         </tr>
         </tbody>
     </table>
-    <div ng-if="showEventDetail" class="event-detail-container">
-        <div class="scrollable" style="height: 200px">
+    <div ng-if="showEventDetail && eventsTypes != null" class="event-detail-container" ng-repeat="eventType in eventsTypes">
+        <div class="scrollable">
             <table class="table table-bordered table-striped table-fixed">
+            <caption class="calendar-header text-left">{{eventType}}</caption>
+                <tr ng-repeat="event in selectedDate.events | filter:{ type: eventType }" ng-if="hasEventsWithType(eventType)">
+                    <td ng-if="!event.allDay" class="monthview-eventdetail-timecolumn">{{event.startTime|date: 'HH:mm'}}
+                        -
+                        {{event.endTime|date: 'HH:mm'}}
+                    </td>
+                    <td ng-if="event.allDay" class="monthview-eventdetail-timecolumn">Hela dagen</td>
+                    <td class="event-detail" ng-click="eventSelected({event:event})">{{event.title}}</td>
+                </tr>
+                <tr ng-if="!hasEventsWithType(eventType)"><td class="no-event-label">No Events</td></tr>
+            </table>
+        </div>
+    </div>
+    <div ng-if="showEventDetail && eventsTypes == null" class="event-detail-container">
+        <div class="scrollable">
+            <table class="table table-bordered table-striped table-fixed">
+            <caption class="calendar-header text-left">{{eventType}}</caption>
                 <tr ng-repeat="event in selectedDate.events" ng-if="selectedDate.events">
                     <td ng-if="!event.allDay" class="monthview-eventdetail-timecolumn">{{event.startTime|date: 'HH:mm'}}
                         -
                         {{event.endTime|date: 'HH:mm'}}
                     </td>
-                    <td ng-if="event.allDay" class="monthview-eventdetail-timecolumn">All day</td>
+                    <td ng-if="event.allDay" class="monthview-eventdetail-timecolumn">Hela dagen</td>
                     <td class="event-detail" ng-click="eventSelected({event:event})">{{event.title}}</td>
                 </tr>
                 <tr ng-if="!selectedDate.events"><td class="no-event-label">No Events</td></tr>

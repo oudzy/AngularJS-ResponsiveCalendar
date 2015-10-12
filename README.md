@@ -91,6 +91,9 @@ The callback function triggered when a date is selected in the monthview
             console.log(event.selectedTime);
         };
 
+* events-types
+Optional array represent the types of events if the events has types
+
 
 # EventSource
 
@@ -111,11 +114,14 @@ For example, if an allDay event ending to 2014-05-10, then endTime is
 
 * allDay    
 Indicates the event is allDay event or regular event
-
-**Note**
+* type
+Optional property if there is a special type for this event
+**Note 1**
 In the current version, the calendar controller only watches for the eventSource reference as it's the least expensive.
 That means only you manually reassign the eventSource value, the controller get notified, and this is usually fit to the scenario when the range is changed, you load a new data set from the backend.
 In case you want to manually insert/remove/update the element in the eventSource array, you can call broadcast the 'eventSourceChanged' event to notify the controller manually.
+**Note 2**
+If you want to edit the default color for an event with a specific type, you can do that with css by targeting event-type-EVENTTYPE.
 
 # Events
 

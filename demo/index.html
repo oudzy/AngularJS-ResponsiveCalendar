@@ -56,7 +56,8 @@
             <div class="well well-sm">
                 <calendar ng-model="currentDate" calendar-mode="mode" event-source="eventSource"
                           range-changed="reloadSource(startTime, endTime)"
-                          event-selected="onEventSelected(event)"></calendar>
+                          event-selected="onEventSelected(event)"
+                          events-types="eventsTypes"></calendar>
             </div>
         </section>
     </section>

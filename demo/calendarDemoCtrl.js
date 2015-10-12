@@ -20,18 +20,21 @@ angular.module('calendarDemoApp').controller('CalendarDemoCtrl', ['$scope', func
     };
 
     $scope.loadEvents = function () {
-        $scope.eventSource = createRandomEvents();
+        $scope.eventsTypes = ['Available', 'busy'];
+        $scope.eventSource = createRandomEvents($scope.eventsTypes);
     };
 
     $scope.onEventSelected = function (event) {
         $scope.event = event;
     };
 
-    function createRandomEvents() {
+    function createRandomEvents(eventsTypes) {
         var events = [];
+        
         for (var i = 0; i < 20; i += 1) {
             var date = new Date();
             var eventType = Math.floor(Math.random() * 2);
+            var eventsType = Math.floor(Math.random() * 2);
             var startDay = Math.floor(Math.random() * 90) - 45;
             var endDay = Math.floor(Math.random() * 2) + startDay;
             var startTime;
@@ -46,7 +49,8 @@ angular.module('calendarDemoApp').controller('CalendarDemoCtrl', ['$scope', func
                     title: 'All Day - ' + i,
                     startTime: startTime,
                     endTime: endTime,
-                    allDay: true
+                    allDay: true,
+                    type: eventsTypes[eventsType]
                 });
             } else {
                 var startMinute = Math.floor(Math.random() * 24 * 60);
@@ -57,7 +61,8 @@ angular.module('calendarDemoApp').controller('CalendarDemoCtrl', ['$scope', func
                     title: 'Event - ' + i,
                     startTime: startTime,
                     endTime: endTime,
-                    allDay: false
+                    allDay: false,
+                    type: eventsTypes[eventsType]
                 });
             }
         }

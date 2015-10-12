@@ -37,7 +37,6 @@ angular.module('ui.rCalendar', [])
                 $parse($attrs.ngModel).assign($scope.$parent, self.currentCalendarDate);
             }
         }
-
         self.init = function (ngModelCtrl_) {
             ngModelCtrl = ngModelCtrl_;
 
@@ -238,6 +237,7 @@ angular.module('ui.rCalendar', [])
             templateUrl: 'template/rcalendar/calendar.html',
             scope: {
                 calendarMode: '=',
+                eventsTypes: '=',
                 rangeChanged: '&',
                 eventSelected: '&',
                 timeSelected: '&'
@@ -274,6 +274,18 @@ angular.module('ui.rCalendar', [])
                 scope.showWeeks = ctrl.showWeeks;
                 scope.showEventDetail = ctrl.showEventDetail;
 
+                scope.hasEventsWithType = function(eventType){
+                    if(scope.selectedDate.events === undefined)
+                        return false;
+                    var hasThisType = false,
+                        events = scope.selectedDate.events;
+                    events.forEach(function(element) {
+                        if(element.type === eventType){
+                            hasThisType = true;
+                        }
+                    }, this);
+                    return hasThisType;
+                };
                 ctrl.mode = {
                     step: {months: 1}
                 };
