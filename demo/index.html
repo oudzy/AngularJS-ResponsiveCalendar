@@ -6,7 +6,7 @@
     <title>AngularJS Responsive Calendar Demo</title>
     <link rel="stylesheet" href="http://cdn.staticfile.org/twitter-bootstrap/3.0.3/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="../dist/css/calendar.min.css"/>
-    <script src="http://cdn.staticfile.org/angular.js/1.2.10/angular.min.js"></script>
+    <script src="angular.min.js"></script>
     <script src="../dist/js/calendar-tpls.min.js"></script>
     <script src="calendarDemoCtrl.js"></script>
 </head>
@@ -57,6 +57,7 @@
                 <calendar ng-model="currentDate" calendar-mode="mode" event-source="eventSource"
                           range-changed="reloadSource(startTime, endTime)"
                           event-selected="onEventSelected(event)"
+                          show-title="false"
                           events-types="eventsTypes"></calendar>
             </div>
         </section>

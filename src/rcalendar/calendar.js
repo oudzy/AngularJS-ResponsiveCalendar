@@ -10,7 +10,8 @@ angular.module('ui.rCalendar', [])
         showEventDetail: true,
         startingDay: 0,
         eventSource: null,
-        queryMode: 'local'
+        queryMode: 'local',
+        showTitle: true
     })
     .controller('CalendarController', ['$scope', '$attrs', '$parse', '$interpolate', '$log', 'dateFilter', 'calendarConfig', function ($scope, $attrs, $parse, $interpolate, $log, dateFilter, calendarConfig) {
         'use strict';
@@ -240,7 +241,8 @@ angular.module('ui.rCalendar', [])
                 eventsTypes: '=',
                 rangeChanged: '&',
                 eventSelected: '&',
-                timeSelected: '&'
+                timeSelected: '&',
+                showTitle: '='
             },
             require: ['calendar', '?^ngModel'],
             controller: 'CalendarController',

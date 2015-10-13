@@ -91,10 +91,14 @@ The callback function triggered when a date is selected in the monthview
             console.log(event.selectedTime);
         };
 
-* events-types
-Optional array represent the types of events if the events has types
+* eventsTypes
+Optional array of string represent the types of events if the events has types
 
+* showTitle
+Optional to show or hide the title in the week view  
 
+    <calendar ... show-title="true"></calendar>
+    
 # EventSource
 
 EventSource is an array of event object which contains at least below fields:

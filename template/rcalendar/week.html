@@ -21,7 +21,10 @@
                             <div ng-repeat="displayEvent in day.events" class="calendar-event"
                                  ng-click="eventSelected({event:displayEvent.event})"
                                  ng-style="{top: 25*displayEvent.position+'px', width: 100*(displayEvent.endIndex-displayEvent.startIndex)+'%', height: '25px'}">
-                                <div class="calendar-event-inner">{{displayEvent.event.title}}</div>
+                                <div class="calendar-event-inner"
+                                    ng-class="displayEvent.event.type == null? '' : 'event-type-'+displayEvent.event.type">
+                                    {{showTitle ? displayEvent.event.title : ''}}
+                                </div>
                             </div>
                         </div>
                     </td>
@@ -45,7 +48,7 @@
                              ng-style="{left: 100/displayEvent.overlapNumber*displayEvent.position+'%', width: 100/displayEvent.overlapNumber+'%', height: 37*(displayEvent.endIndex-displayEvent.startIndex)+'px'}">
                             <div class="calendar-event-inner"
                                 ng-class="displayEvent.event.type == null? '' : 'event-type-'+displayEvent.event.type">
-                                {{displayEvent.event.title}}
+                                {{showTitle ? displayEvent.event.title : ''}}
                             </div>
                         </div>
                     </div>
