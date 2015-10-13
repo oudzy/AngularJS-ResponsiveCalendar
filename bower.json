@@ -1,9 +1,10 @@
 {
-    "name": "ng-responsive-calendar",
-    "version": "0.1.7",
-    "homepage": "https://github.com/twinssbc/AngularJS-ResponsiveCalendar",
+    "name": "ng-responsive-calendar-extended",
+    "version": "0.1.8",
+    "homepage": "https://github.com/oudzy/AngularJS-ResponsiveCalendar",
     "authors": [
-        "twinssbc <bocong@hotmail.com>"
+        "twinssbc <bocong@hotmail.com>",
+        "oudzy"
     ],
     "description": "A pure AngularJS responsive calendar directive",
     "main": [
