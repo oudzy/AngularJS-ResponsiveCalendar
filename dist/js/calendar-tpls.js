@@ -1108,7 +1108,7 @@ angular.module("template/rcalendar/month.html", []).run(["$templateCache", funct
     "                        -\n" +
     "                        {{event.endTime|date: 'HH:mm'}}\n" +
     "                    </td>\n" +
-    "                    <td ng-if=\"event.allDay\" class=\"monthview-eventdetail-timecolumn\">Hela dagen</td>\n" +
+    "                    <td ng-if=\"event.allDay\" ng-class=\"{'one-cell': !event.title}\" class=\"monthview-eventdetail-timecolumn\">Hela dagen</td>\n" +
     "                    <td ng-if=\"event.title\" class=\"event-detail\">{{event.title}}</td>\n" +
     "                </tr>\n" +
     "                <tr ng-if=\"!hasEventsWithType(eventType)\"><td class=\"no-event-label\">No Events</td></tr>\n" +
@@ -1120,10 +1120,10 @@ angular.module("template/rcalendar/month.html", []).run(["$templateCache", funct
     "            <table class=\"table table-bordered table-striped table-fixed\">\n" +
     "            <caption class=\"calendar-header text-left\">{{eventType}}</caption>\n" +
     "                <tr ng-repeat=\"event in selectedDate.events\" ng-click=\"eventSelected({event:event})\" ng-if=\"selectedDate.events\">\n" +
-    "                    <td ng-if=\"!event.allDay\" ng-class=\"{'one-cell': event.title === null}\" class=\"monthview-eventdetail-timecolumn\">\n" +
+    "                    <td ng-if=\"!event.allDay\" ng-class=\"{'one-cell': !event.title}\" class=\"monthview-eventdetail-timecolumn\">\n" +
     "                        {{event.startTime|date: 'HH:mm'}} - {{event.endTime|date: 'HH:mm'}}\n" +
     "                    </td>\n" +
-    "                    <td ng-if=\"event.allDay\" class=\"monthview-eventdetail-timecolumn\">Hela dagen</td>\n" +
+    "                    <td ng-if=\"event.allDay\" ng-class=\"{'one-cell': !event.title}\" class=\"monthview-eventdetail-timecolumn\">Hela dagen</td>\n" +
     "                    <td ng-if=\"event.title\" class=\"event-detail\" >{{event.title}}</td>\n" +
     "                </tr>\n" +
     "                <tr ng-if=\"!selectedDate.events\"><td class=\"no-event-label\">No Events</td></tr>\n" +
