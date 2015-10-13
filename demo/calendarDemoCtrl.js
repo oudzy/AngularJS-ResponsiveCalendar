@@ -58,7 +58,6 @@ angular.module('calendarDemoApp').controller('CalendarDemoCtrl', ['$scope', func
                 startTime = new Date(date.getFullYear(), date.getMonth(), date.getDate() + startDay, 0, date.getMinutes() + startMinute);
                 endTime = new Date(date.getFullYear(), date.getMonth(), date.getDate() + endDay, 0, date.getMinutes() + endMinute);
                 events.push({
-                    title: 'Event - ' + i,
                     startTime: startTime,
                     endTime: endTime,
                     allDay: false,

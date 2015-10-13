@@ -1103,13 +1103,13 @@ angular.module("template/rcalendar/month.html", []).run(["$templateCache", funct
     "        <div class=\"scrollable\">\n" +
     "            <table class=\"table table-bordered table-striped table-fixed\">\n" +
     "            <caption class=\"calendar-header text-left\">{{eventType}}</caption>\n" +
-    "                <tr ng-repeat=\"event in selectedDate.events | filter:{ type: eventType }\" ng-if=\"hasEventsWithType(eventType)\">\n" +
-    "                    <td ng-if=\"!event.allDay\" class=\"monthview-eventdetail-timecolumn\">{{event.startTime|date: 'HH:mm'}}\n" +
+    "                <tr ng-repeat=\"event in selectedDate.events | filter:{ type: eventType }\"  ng-click=\"eventSelected({event:event})\" ng-if=\"hasEventsWithType(eventType)\">\n" +
+    "                    <td ng-if=\"!event.allDay\" ng-class=\"{'one-cell': !event.title}\" class=\"monthview-eventdetail-timecolumn\">{{event.startTime|date: 'HH:mm'}}\n" +
     "                        -\n" +
     "                        {{event.endTime|date: 'HH:mm'}}\n" +
     "                    </td>\n" +
     "                    <td ng-if=\"event.allDay\" class=\"monthview-eventdetail-timecolumn\">Hela dagen</td>\n" +
-    "                    <td class=\"event-detail\" ng-click=\"eventSelected({event:event})\">{{event.title}}</td>\n" +
+    "                    <td ng-if=\"event.title\" class=\"event-detail\">{{event.title}}</td>\n" +
     "                </tr>\n" +
     "                <tr ng-if=\"!hasEventsWithType(eventType)\"><td class=\"no-event-label\">No Events</td></tr>\n" +
     "            </table>\n" +
@@ -1119,13 +1119,12 @@ angular.module("template/rcalendar/month.html", []).run(["$templateCache", funct
     "        <div class=\"scrollable\">\n" +
     "            <table class=\"table table-bordered table-striped table-fixed\">\n" +
     "            <caption class=\"calendar-header text-left\">{{eventType}}</caption>\n" +
-    "                <tr ng-repeat=\"event in selectedDate.events\" ng-if=\"selectedDate.events\">\n" +
-    "                    <td ng-if=\"!event.allDay\" class=\"monthview-eventdetail-timecolumn\">{{event.startTime|date: 'HH:mm'}}\n" +
-    "                        -\n" +
-    "                        {{event.endTime|date: 'HH:mm'}}\n" +
+    "                <tr ng-repeat=\"event in selectedDate.events\" ng-click=\"eventSelected({event:event})\" ng-if=\"selectedDate.events\">\n" +
+    "                    <td ng-if=\"!event.allDay\" ng-class=\"{'one-cell': event.title === null}\" class=\"monthview-eventdetail-timecolumn\">\n" +
+    "                        {{event.startTime|date: 'HH:mm'}} - {{event.endTime|date: 'HH:mm'}}\n" +
     "                    </td>\n" +
     "                    <td ng-if=\"event.allDay\" class=\"monthview-eventdetail-timecolumn\">Hela dagen</td>\n" +
-    "                    <td class=\"event-detail\" ng-click=\"eventSelected({event:event})\">{{event.title}}</td>\n" +
+    "                    <td ng-if=\"event.title\" class=\"event-detail\" >{{event.title}}</td>\n" +
     "                </tr>\n" +
     "                <tr ng-if=\"!selectedDate.events\"><td class=\"no-event-label\">No Events</td></tr>\n" +
     "            </table>\n" +
@@ -1148,7 +1147,7 @@ angular.module("template/rcalendar/week.html", []).run(["$templateCache", functi
     "    </table>\n" +
     "    <div class=\"weekview-allday-table\">\n" +
     "        <div class=\"weekview-allday-label\">\n" +
-    "            all day\n" +
+    "            Hela dagen\n" +
     "        </div>\n" +
     "        <div class=\"weekview-allday-content-wrapper\">\n" +
     "            <table class=\"table table-bordered table-fixed\" style=\"height: 100%; margin-bottom: 0px\">\n" +
