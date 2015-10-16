@@ -11,7 +11,8 @@ angular.module('ui.rCalendar', [])
         startingDay: 0,
         eventSource: null,
         queryMode: 'local',
-        showTitle: true
+        showTitle: true,
+        hideWeekend: false
     })
     .controller('CalendarController', ['$scope', '$attrs', '$parse', '$interpolate', '$log', 'dateFilter', 'calendarConfig', function ($scope, $attrs, $parse, $interpolate, $log, dateFilter, calendarConfig) {
         'use strict';
@@ -242,13 +243,15 @@ angular.module('ui.rCalendar', [])
                 rangeChanged: '&',
                 eventSelected: '&',
                 timeSelected: '&',
-                showTitle: '='
+                showTitle: '=',
+                hideWeekend: '=',
+                allDayTitle: '@',
+                noEventsTitle: '@'
             },
             require: ['calendar', '?^ngModel'],
             controller: 'CalendarController',
             link: function (scope, element, attrs, ctrls) {
                 var calendarCtrl = ctrls[0], ngModelCtrl = ctrls[1];
-
                 if (ngModelCtrl) {
                     calendarCtrl.init(ngModelCtrl);
                 }
@@ -556,7 +559,9 @@ angular.module('ui.rCalendar', [])
                 ctrl.mode = {
                     step: {days: 7}
                 };
-
+                
+                
+                
                 function updateScrollGutter() {
                     var children = element.children();
                     var allDayEventBody = children[1].children[1];
@@ -602,7 +607,9 @@ angular.module('ui.rCalendar', [])
 
                     for (var hour = 0; hour < 24; hour += 1) {
                         row = [];
-                        for (var day = 0; day < 7; day += 1) {
+                        var startFrom = scope.hideWeekend === true?  1 :  0,
+                            endIn = scope.hideWeekend === true?  6 :  7;
+                        for (var day = startFrom; day < endIn; day += 1) {
                             time.setHours(currentHour + hour);
                             time.setDate(currentDate + day);
                             row.push({
@@ -637,7 +644,7 @@ angular.module('ui.rCalendar', [])
                     if (rows.hasEvent) {
                         for (day = 0; day < 7; day += 1) {
                             for (hour = 0; hour < 24; hour += 1) {
-                                if (rows[hour][day].events) {
+                                if (rows[hour][day] && rows[hour][day].events) {
                                     rows[hour][day].events = null;
                                 }
                             }
@@ -647,7 +654,7 @@ angular.module('ui.rCalendar', [])
 
                     if (dates.hasEvent) {
                         for (day = 0; day < 7; day += 1) {
-                            if (dates[day].events) {
+                            if (dates[day] && dates[day].events) {
                                 dates[day].events = null;
                             }
                         }
@@ -752,7 +759,7 @@ angular.module('ui.rCalendar', [])
                         for (day = 0; day < 7; day += 1) {
                             var orderedEvents = [];
                             for (hour = 0; hour < 24; hour += 1) {
-                                if (rows[hour][day].events) {
+                                if (rows[hour][day] && rows[hour][day].events) {
                                     orderedEvents = orderedEvents.concat(rows[hour][day].events);
                                 }
                             }
@@ -766,7 +773,7 @@ angular.module('ui.rCalendar', [])
                     if (allDayEventInRange) {
                         var orderedAllDayEvents = [];
                         for (day = 0; day < 7; day += 1) {
-                            if (dates[day].events) {
+                            if (dates[day] && dates[day].events) {
                                 orderedAllDayEvents = orderedAllDayEvents.concat(dates[day].events);
                             }
                         }
@@ -783,7 +790,7 @@ angular.module('ui.rCalendar', [])
 
                 ctrl._refreshView = function () {
                     var firstDayOfWeek = ctrl.range.startTime,
-                        dates = getDates(firstDayOfWeek, 7),
+                        dates = scope.$parent.hideWeekend === true? getDates(firstDayOfWeek, 5) :getDates(firstDayOfWeek, 7),
                         weekNumberIndex,
                         weekFormatPattern = 'w',
                         title;
@@ -803,8 +810,8 @@ angular.module('ui.rCalendar', [])
                         month = currentDate.getMonth(),
                         date = currentDate.getDate(),
                         day = currentDate.getDay(),
-                        firstDayOfWeek = new Date(year, month, date - day),
-                        endTime = new Date(year, month, date - day + 7);
+                        firstDayOfWeek = new Date(year, month, scope.hideWeekend? date - day +1: date - day),
+                        endTime = new Date(year, month, scope.hideWeekend? date - day + 6 : date - day + 7);
 
                     return {
                         startTime: firstDayOfWeek,

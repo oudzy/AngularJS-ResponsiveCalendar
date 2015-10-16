@@ -4,13 +4,13 @@
         <tr>
             <th class="calendar-hour-column"></th>
             <th ng-repeat="dt in dates" class="text-center weekview-header-label">{{dt.date| date: 'EEE d'}}</span></th>
-            <th ng-if="gutterWidth>0" ng-style="{width: gutterWidth+'px'}"></th>
+            <!--<th ng-if="gutterWidth>0" ng-style="{width: gutterWidth+'px'}"></th>-->
         </tr>
         </thead>
     </table>
     <div class="weekview-allday-table">
         <div class="weekview-allday-label">
-            Hela dagen
+            {{$parent.allDayTitle ? $parent.allDayTitle : 'All day'}}
         </div>
         <div class="weekview-allday-content-wrapper">
             <table class="table table-bordered table-fixed" style="height: 100%; margin-bottom: 0px">
@@ -28,13 +28,13 @@
                             </div>
                         </div>
                     </td>
-                    <td ng-if="allDayEventGutterWidth>0" ng-style="{width: allDayEventGutterWidth+'px'}"></td>
+                    <!--<td ng-if="allDayEventGutterWidth>0" ng-style="{width: allDayEventGutterWidth+'px'}"></td>-->
                 </tr>
                 </tbody>
             </table>
         </div>
     </div>
-    <div class="scrollable" style="height: 400px">
+    <div class="scrollable" style="height: 100%">
         <table class="table table-bordered table-fixed">
             <tbody>
             <tr ng-repeat="row in rows track by $index">
