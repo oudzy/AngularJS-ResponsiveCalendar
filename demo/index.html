@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="description" content="AngularJS Responsive Calendar Demo">
     <title>AngularJS Responsive Calendar Demo</title>
-    <link rel="stylesheet" href="http://cdn.staticfile.org/twitter-bootstrap/3.0.3/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="../dist/css/calendar.min.css"/>
-    <script src="angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
     <script src="../dist/js/calendar-tpls.min.js"></script>
     <script src="calendarDemoCtrl.js"></script>
 </head>
@@ -58,6 +58,9 @@
                           range-changed="reloadSource(startTime, endTime)"
                           event-selected="onEventSelected(event)"
                           show-title="false"
+                          hide-weekend="true"
+                          all-day-title="Hel dag"
+                          no-events-title="Tom"
                           events-types="eventsTypes"></calendar>
             </div>
         </section>

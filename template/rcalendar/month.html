@@ -3,7 +3,9 @@
         <thead>
         <tr>
             <th ng-show="showWeeks" class="calendar-week-column text-center">#</th>
-            <th ng-repeat="label in labels track by $index" class="text-center">
+            <th ng-repeat="label in labels track by $index" 
+                ng-show="($index !== 0 && $index !== 6)||(!$parent.hideWeekend)"
+                class="text-center">
                 <small>{{label}}</small>
             </th>
         </tr>
@@ -14,6 +16,7 @@
                 <small><em>{{ weekNumbers[$index] }}</em></small>
             </td>
             <td ng-repeat="dt in row track by dt.date" class="monthview-dateCell" ng-click="select(dt.date)"
+                ng-show="($index !== 0 && $index !== 6)||(!$parent.hideWeekend)"
                 ng-class="{'text-center':true, 'monthview-current': dt.current&&!dt.selected&&!dt.hasEvent,'monthview-secondary-with-event': dt.secondary&&dt.hasEvent, 'monthview-primary-with-event':!dt.secondary&&dt.hasEvent&&!dt.selected, 'monthview-selected': dt.selected}">
                 <div ng-class="{'text-muted':dt.secondary}">
                     {{dt.label}}
@@ -31,10 +34,10 @@
                         -
                         {{event.endTime|date: 'HH:mm'}}
                     </td>
-                    <td ng-if="event.allDay" ng-class="{'one-cell': !event.title}" class="monthview-eventdetail-timecolumn">Hela dagen</td>
+                    <td ng-if="event.allDay" ng-class="{'one-cell': !event.title}" class="monthview-eventdetail-timecolumn">{{$parent.allDayTitle ? $parent.allDayTitle : 'All day'}}</td>
                     <td ng-if="event.title" class="event-detail">{{event.title}}</td>
                 </tr>
-                <tr ng-if="!hasEventsWithType(eventType)"><td class="no-event-label">No Events</td></tr>
+                <tr ng-if="!hasEventsWithType(eventType)"><td class="no-event-label">{{$parent.noEventsTitle ? $parent.noEventsTitle : 'No Events'}}</td></tr>
             </table>
         </div>
     </div>
@@ -46,10 +49,10 @@
                     <td ng-if="!event.allDay" ng-class="{'one-cell': !event.title}" class="monthview-eventdetail-timecolumn">
                         {{event.startTime|date: 'HH:mm'}} - {{event.endTime|date: 'HH:mm'}}
                     </td>
-                    <td ng-if="event.allDay" ng-class="{'one-cell': !event.title}" class="monthview-eventdetail-timecolumn">Hela dagen</td>
+                    <td ng-if="event.allDay" ng-class="{'one-cell': !event.title}" class="monthview-eventdetail-timecolumn">{{$parent.allDayTitle ? $parent.allDayTitle : 'All day'}}</td>
                     <td ng-if="event.title" class="event-detail" >{{event.title}}</td>
                 </tr>
-                <tr ng-if="!selectedDate.events"><td class="no-event-label">No Events</td></tr>
+                <tr ng-if="!selectedDate.events"><td class="no-event-label">{{$parent.noEventsTitle ? $parent.noEventsTitle : 'No Events'}}</td></tr>
             </table>
         </div>
     </div>

@@ -97,7 +97,17 @@ Optional array of string represent the types of events if the events has types
 * showTitle
 Optional to show or hide the title in the week view
     <calendar ... show-title="true"></calendar>
-    
+
+* hideWeekend
+Optional boolean to hide Saturday and Sunday in Month and Week views
+
+* allDayTitle
+Optional to Override the all day text in Month and Day view
+
+* noEventsTitle
+Optional to override the text in the month view when there is no events
+
+
 # EventSource
 
 EventSource is an array of event object which contains at least below fields:
