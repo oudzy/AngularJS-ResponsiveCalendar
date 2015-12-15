@@ -1,5 +1,5 @@
 <div>
-    <div class="dayview-allday-table">
+    <div ng-hide="hideAllday" class="dayview-allday-table">
         <div class="dayview-allday-label">
             {{$parent.allDayTitle ? $parent.allDayTitle : 'All day'}}
         </div>
@@ -25,7 +25,7 @@
             <tbody>
             <tr ng-repeat="tm in rows track by $index">
                 <td class="calendar-hour-column text-center">
-                    {{$index<12?($index === 0?12:$index)+'am':($index === 12?$index:$index-12)+'pm'}}
+                    {{getHour($index)}}
                 </td>
                 <td class="calendar-cell">
                     <div ng-class="{'calendar-event-wrap': tm.events}" ng-if="tm.events">

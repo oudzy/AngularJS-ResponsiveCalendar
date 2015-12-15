@@ -246,7 +246,11 @@ angular.module('ui.rCalendar', [])
                 showTitle: '=',
                 hideWeekend: '=',
                 allDayTitle: '@',
-                noEventsTitle: '@'
+                noEventsTitle: '@',
+                timeMode: '@',
+                dayStart: '@',
+                dayEnd: '@',
+                hideAllday: '='
             },
             require: ['calendar', '?^ngModel'],
             controller: 'CalendarController',
@@ -552,6 +556,8 @@ angular.module('ui.rCalendar', [])
             templateUrl: 'template/rcalendar/week.html',
             require: '^calendar',
             link: function (scope, element, attrs, ctrl) {
+                var startFrom = scope.dayStart && parseInt(scope.dayStart, 10)? parseInt(scope.dayStart, 10) : 0,
+                    endIn = scope.dayEnd && parseInt(scope.dayEnd, 10)? parseInt(scope.dayEnd, 10) : 23;
                 $timeout(function () {
                     updateScrollGutter();
                 });
@@ -605,11 +611,11 @@ angular.module('ui.rCalendar', [])
                         currentHour = time.getHours(),
                         currentDate = time.getDate();
 
-                    for (var hour = 0; hour < 24; hour += 1) {
+                    for (var hour = startFrom; hour <= endIn; hour += 1) {
                         row = [];
-                        var startFrom = scope.hideWeekend === true?  1 :  0,
-                            endIn = scope.hideWeekend === true?  6 :  7;
-                        for (var day = startFrom; day < endIn; day += 1) {
+                        var startDayFrom = scope.hideWeekend === true?  1 :  0,
+                            endDayIn = scope.hideWeekend === true?  6 :  7;
+                        for (var day = startDayFrom; day < endDayIn; day += 1) {
                             time.setHours(currentHour + hour);
                             time.setDate(currentDate + day);
                             row.push({
@@ -643,8 +649,8 @@ angular.module('ui.rCalendar', [])
 
                     if (rows.hasEvent) {
                         for (day = 0; day < 7; day += 1) {
-                            for (hour = 0; hour < 24; hour += 1) {
-                                if (rows[hour][day] && rows[hour][day].events) {
+                            for (hour = startFrom; hour <= endIn; hour += 1) {
+                                if (rows[hour] && rows[hour][day] && rows[hour][day].events) {
                                     rows[hour][day].events = null;
                                 }
                             }
@@ -758,8 +764,8 @@ angular.module('ui.rCalendar', [])
                     if (normalEventInRange) {
                         for (day = 0; day < 7; day += 1) {
                             var orderedEvents = [];
-                            for (hour = 0; hour < 24; hour += 1) {
-                                if (rows[hour][day] && rows[hour][day].events) {
+                            for (hour = startFrom; hour <= endIn; hour += 1) {
+                                if (rows[hour] && rows[hour][day] && rows[hour][day].events) {
                                     orderedEvents = orderedEvents.concat(rows[hour][day].events);
                                 }
                             }
@@ -819,6 +825,7 @@ angular.module('ui.rCalendar', [])
                     };
                 };
 
+
                 //This can be decomissioned when upgrade to Angular 1.3
                 function getISO8601WeekNumber(date) {
                     var checkDate = new Date(date);
@@ -829,6 +836,17 @@ angular.module('ui.rCalendar', [])
                     return Math.floor(Math.round((time - checkDate) / 86400000) / 7) + 1;
                 }
 
+                scope.getHour = function(index){
+                    if(parseInt(scope.timeMode, 10) === 12){
+                        return (startFrom + index) < 12?
+                            ((startFrom + index) === 0?12:(startFrom + index))+'am':((startFrom + index) === 12?(startFrom + index):(startFrom + index)-12)+'pm';
+                    }
+                    else if(!scope.timeMode || parseInt(scope.timeMode, 10) === 24){
+                        return (startFrom + index)<10 ?
+                            '0'+ (startFrom + index) + ':00':
+                            (startFrom + index) + ':00';
+                    }
+                };
                 ctrl.refreshView();
             }
         };
@@ -841,6 +859,8 @@ angular.module('ui.rCalendar', [])
             templateUrl: 'template/rcalendar/day.html',
             require: '^calendar',
             link: function (scope, element, attrs, ctrl) {
+                var startFrom = scope.dayStart && parseInt(scope.dayStart, 10)? parseInt(scope.dayStart, 10) : 0,
+                    endIn = scope.dayEnd && parseInt(scope.dayEnd, 10)? parseInt(scope.dayEnd, 10) : 23;
                 $timeout(function () {
                     updateScrollGutter();
                 });
@@ -876,7 +896,7 @@ angular.module('ui.rCalendar', [])
                         currentHour = time.getHours(),
                         currentDate = time.getDate();
 
-                    for (var hour = 0; hour < 24; hour += 1) {
+                    for (var hour = startFrom; hour <= endIn; hour += 1) {
                         time.setHours(currentHour + hour);
                         time.setDate(currentDate);
                         rows.push({
@@ -903,7 +923,7 @@ angular.module('ui.rCalendar', [])
                         hour;
 
                     if (rows.hasEvent) {
-                        for (hour = 0; hour < 24; hour += 1) {
+                        for (hour = startFrom; hour <= endIn; hour += 1) {
                             if (rows[hour].events) {
                                 rows[hour].events = null;
                             }
@@ -967,7 +987,7 @@ angular.module('ui.rCalendar', [])
 
                     if (normalEventInRange) {
                         var orderedEvents = [];
-                        for (hour = 0; hour < 24; hour += 1) {
+                        for (hour = startFrom; hour < endIn; hour += 1) {
                             if (rows[hour].events) {
                                 orderedEvents = orderedEvents.concat(rows[hour].events);
                             }
@@ -1007,6 +1027,17 @@ angular.module('ui.rCalendar', [])
                     };
                 };
 
+                scope.getHour = function(index){
+                    if(parseInt(scope.timeMode, 10) === 12){
+                        return (startFrom + index) < 12?
+                            ((startFrom + index) === 0?12:(startFrom + index))+'am':((startFrom + index) === 12?(startFrom + index):(startFrom + index)-12)+'pm';
+                    }
+                    else if(!scope.timeMode || parseInt(scope.timeMode, 10) === 24){
+                        return (startFrom + index)<10 ?
+                            '0'+ (startFrom + index) + ':00':
+                            (startFrom + index) + ':00';
+                    }
+                };
                 ctrl.refreshView();
             }
         };

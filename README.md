@@ -107,6 +107,17 @@ Optional to Override the all day text in Month and Day view
 * noEventsTitle
 Optional to override the text in the month view when there is no events
 
+* timeMode
+Optional 12 or 24
+
+* dayStart
+Optional display from hour (0 .. 23) 
+
+* dayEnd
+Optional display till hour (0 .. 23) 
+
+* hideAllday
+Optional hide allDay events 
 
 # EventSource
 

@@ -247,7 +247,11 @@ angular.module('ui.rCalendar', ['ui.rCalendar.tpls'])
                 showTitle: '=',
                 hideWeekend: '=',
                 allDayTitle: '@',
-                noEventsTitle: '@'
+                noEventsTitle: '@',
+                timeMode: '@',
+                dayStart: '@',
+                dayEnd: '@',
+                hideAllday: '='
             },
             require: ['calendar', '?^ngModel'],
             controller: 'CalendarController',
@@ -553,6 +557,8 @@ angular.module('ui.rCalendar', ['ui.rCalendar.tpls'])
             templateUrl: 'template/rcalendar/week.html',
             require: '^calendar',
             link: function (scope, element, attrs, ctrl) {
+                var startFrom = scope.dayStart && parseInt(scope.dayStart, 10)? parseInt(scope.dayStart, 10) : 0,
+                    endIn = scope.dayEnd && parseInt(scope.dayEnd, 10)? parseInt(scope.dayEnd, 10) : 23;
                 $timeout(function () {
                     updateScrollGutter();
                 });
@@ -606,11 +612,11 @@ angular.module('ui.rCalendar', ['ui.rCalendar.tpls'])
                         currentHour = time.getHours(),
                         currentDate = time.getDate();
 
-                    for (var hour = 0; hour < 24; hour += 1) {
+                    for (var hour = startFrom; hour <= endIn; hour += 1) {
                         row = [];
-                        var startFrom = scope.hideWeekend === true?  1 :  0,
-                            endIn = scope.hideWeekend === true?  6 :  7;
-                        for (var day = startFrom; day < endIn; day += 1) {
+                        var startDayFrom = scope.hideWeekend === true?  1 :  0,
+                            endDayIn = scope.hideWeekend === true?  6 :  7;
+                        for (var day = startDayFrom; day < endDayIn; day += 1) {
                             time.setHours(currentHour + hour);
                             time.setDate(currentDate + day);
                             row.push({
@@ -644,8 +650,8 @@ angular.module('ui.rCalendar', ['ui.rCalendar.tpls'])
 
                     if (rows.hasEvent) {
                         for (day = 0; day < 7; day += 1) {
-                            for (hour = 0; hour < 24; hour += 1) {
-                                if (rows[hour][day] && rows[hour][day].events) {
+                            for (hour = startFrom; hour <= endIn; hour += 1) {
+                                if (rows[hour] && rows[hour][day] && rows[hour][day].events) {
                                     rows[hour][day].events = null;
                                 }
                             }
@@ -759,8 +765,8 @@ angular.module('ui.rCalendar', ['ui.rCalendar.tpls'])
                     if (normalEventInRange) {
                         for (day = 0; day < 7; day += 1) {
                             var orderedEvents = [];
-                            for (hour = 0; hour < 24; hour += 1) {
-                                if (rows[hour][day] && rows[hour][day].events) {
+                            for (hour = startFrom; hour <= endIn; hour += 1) {
+                                if (rows[hour] && rows[hour][day] && rows[hour][day].events) {
                                     orderedEvents = orderedEvents.concat(rows[hour][day].events);
                                 }
                             }
@@ -820,6 +826,7 @@ angular.module('ui.rCalendar', ['ui.rCalendar.tpls'])
                     };
                 };
 
+
                 //This can be decomissioned when upgrade to Angular 1.3
                 function getISO8601WeekNumber(date) {
                     var checkDate = new Date(date);
@@ -830,6 +837,17 @@ angular.module('ui.rCalendar', ['ui.rCalendar.tpls'])
                     return Math.floor(Math.round((time - checkDate) / 86400000) / 7) + 1;
                 }
 
+                scope.getHour = function(index){
+                    if(parseInt(scope.timeMode, 10) === 12){
+                        return (startFrom + index) < 12?
+                            ((startFrom + index) === 0?12:(startFrom + index))+'am':((startFrom + index) === 12?(startFrom + index):(startFrom + index)-12)+'pm';
+                    }
+                    else if(!scope.timeMode || parseInt(scope.timeMode, 10) === 24){
+                        return (startFrom + index)<10 ?
+                            '0'+ (startFrom + index) + ':00':
+                            (startFrom + index) + ':00';
+                    }
+                };
                 ctrl.refreshView();
             }
         };
@@ -842,6 +860,8 @@ angular.module('ui.rCalendar', ['ui.rCalendar.tpls'])
             templateUrl: 'template/rcalendar/day.html',
             require: '^calendar',
             link: function (scope, element, attrs, ctrl) {
+                var startFrom = scope.dayStart && parseInt(scope.dayStart, 10)? parseInt(scope.dayStart, 10) : 0,
+                    endIn = scope.dayEnd && parseInt(scope.dayEnd, 10)? parseInt(scope.dayEnd, 10) : 23;
                 $timeout(function () {
                     updateScrollGutter();
                 });
@@ -877,7 +897,7 @@ angular.module('ui.rCalendar', ['ui.rCalendar.tpls'])
                         currentHour = time.getHours(),
                         currentDate = time.getDate();
 
-                    for (var hour = 0; hour < 24; hour += 1) {
+                    for (var hour = startFrom; hour <= endIn; hour += 1) {
                         time.setHours(currentHour + hour);
                         time.setDate(currentDate);
                         rows.push({
@@ -904,7 +924,7 @@ angular.module('ui.rCalendar', ['ui.rCalendar.tpls'])
                         hour;
 
                     if (rows.hasEvent) {
-                        for (hour = 0; hour < 24; hour += 1) {
+                        for (hour = startFrom; hour <= endIn; hour += 1) {
                             if (rows[hour].events) {
                                 rows[hour].events = null;
                             }
@@ -968,7 +988,7 @@ angular.module('ui.rCalendar', ['ui.rCalendar.tpls'])
 
                     if (normalEventInRange) {
                         var orderedEvents = [];
-                        for (hour = 0; hour < 24; hour += 1) {
+                        for (hour = startFrom; hour < endIn; hour += 1) {
                             if (rows[hour].events) {
                                 orderedEvents = orderedEvents.concat(rows[hour].events);
                             }
@@ -1008,6 +1028,17 @@ angular.module('ui.rCalendar', ['ui.rCalendar.tpls'])
                     };
                 };
 
+                scope.getHour = function(index){
+                    if(parseInt(scope.timeMode, 10) === 12){
+                        return (startFrom + index) < 12?
+                            ((startFrom + index) === 0?12:(startFrom + index))+'am':((startFrom + index) === 12?(startFrom + index):(startFrom + index)-12)+'pm';
+                    }
+                    else if(!scope.timeMode || parseInt(scope.timeMode, 10) === 24){
+                        return (startFrom + index)<10 ?
+                            '0'+ (startFrom + index) + ':00':
+                            (startFrom + index) + ':00';
+                    }
+                };
                 ctrl.refreshView();
             }
         };
@@ -1036,7 +1067,7 @@ angular.module("template/rcalendar/calendar.html", []).run(["$templateCache", fu
 angular.module("template/rcalendar/day.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("template/rcalendar/day.html",
     "<div>\n" +
-    "    <div class=\"dayview-allday-table\">\n" +
+    "    <div ng-hide=\"hideAllday\" class=\"dayview-allday-table\">\n" +
     "        <div class=\"dayview-allday-label\">\n" +
     "            {{$parent.allDayTitle ? $parent.allDayTitle : 'All day'}}\n" +
     "        </div>\n" +
@@ -1062,7 +1093,7 @@ angular.module("template/rcalendar/day.html", []).run(["$templateCache", functio
     "            <tbody>\n" +
     "            <tr ng-repeat=\"tm in rows track by $index\">\n" +
     "                <td class=\"calendar-hour-column text-center\">\n" +
-    "                    {{$index<12?($index === 0?12:$index)+'am':($index === 12?$index:$index-12)+'pm'}}\n" +
+    "                    {{getHour($index)}}\n" +
     "                </td>\n" +
     "                <td class=\"calendar-cell\">\n" +
     "                    <div ng-class=\"{'calendar-event-wrap': tm.events}\" ng-if=\"tm.events\">\n" +
@@ -1155,7 +1186,7 @@ angular.module("template/rcalendar/week.html", []).run(["$templateCache", functi
     "        </tr>\n" +
     "        </thead>\n" +
     "    </table>\n" +
-    "    <div class=\"weekview-allday-table\">\n" +
+    "    <div ng-hide=\"hideAllday\" class=\"weekview-allday-table\">\n" +
     "        <div class=\"weekview-allday-label\">\n" +
     "            {{$parent.allDayTitle ? $parent.allDayTitle : 'All day'}}\n" +
     "        </div>\n" +
@@ -1186,7 +1217,7 @@ angular.module("template/rcalendar/week.html", []).run(["$templateCache", functi
     "            <tbody>\n" +
     "            <tr ng-repeat=\"row in rows track by $index\">\n" +
     "                <td class=\"calendar-hour-column text-center\">\n" +
-    "                    {{$index<12?($index === 0?12:$index)+'am':($index === 12?$index:$index-12)+'pm'}}\n" +
+    "                    {{getHour($index)}}\n" +
     "                </td>\n" +
     "                <td ng-repeat=\"tm in row track by tm.time\" class=\"calendar-cell\">\n" +
     "                    <div ng-class=\"{'calendar-event-wrap': tm.events}\" ng-if=\"tm.events\">\n" +

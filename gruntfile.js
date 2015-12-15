@@ -67,7 +67,8 @@ module.exports = function (grunt) {
         uglify: {
             dist_tpls: {
                 options: {
-                    mangle: false
+                    mangle: false,
+                    sourceMap: true
                 },
                 src: ['dist/js/calendar-tpls.js'],
                 dest: 'dist/js/calendar-tpls.min.js'
