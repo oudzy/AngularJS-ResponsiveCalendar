@@ -728,6 +728,7 @@ angular.module('ui.rCalendar', ['ui.rCalendar.tpls'])
                                     timeDifferenceEnd = (eventEndTime - startTime) / oneHour;
                                 }
 
+                                //var scheduleRows = endIn && startFrom ? ( parseInt(endIn, 10 ) - parseInt( startFrom, 10 )) : 24 ;
                                 var startIndex = Math.floor(timeDifferenceStart);
                                 var endIndex = Math.ceil(timeDifferenceEnd - eps);
                                 var startRowIndex = startIndex % 24;
@@ -744,16 +745,16 @@ angular.module('ui.rCalendar', ['ui.rCalendar.tpls'])
                                     }
                                     var displayEvent = {
                                         event: event,
-                                        startIndex: startRowIndex,
-                                        endIndex: endRowIndex
+                                        startIndex: startRowIndex - startFrom,
+                                        endIndex: endRowIndex - startFrom
                                     };
-                                    eventSet = rows[startRowIndex][dayIndex].events;
+                                    eventSet = rows[startRowIndex - startFrom]? rows[startRowIndex - startFrom][dayIndex].events : null;
                                     if (eventSet) {
                                         eventSet.push(displayEvent);
-                                    } else {
+                                    } else if(rows[startRowIndex - startFrom]){
                                         eventSet = [];
                                         eventSet.push(displayEvent);
-                                        rows[startRowIndex][dayIndex].events = eventSet;
+                                        rows[startRowIndex - startFrom][dayIndex].events = eventSet;
                                     }
                                     startRowIndex = 0;
                                     dayIndex += 1;
