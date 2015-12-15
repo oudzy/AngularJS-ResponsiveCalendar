@@ -745,8 +745,12 @@ angular.module('ui.rCalendar', [])
                                     var displayEvent = {
                                         event: event,
                                         startIndex: startRowIndex - startFrom,
-                                        endIndex: endRowIndex - startFrom
+                                        endIndex: endRowIndex - startFrom,
+                                        overlapNumber: 1,
+                                        position: 0
                                     };
+                                    console.log('displayEvent');
+                                    console.log(displayEvent);
                                     eventSet = rows[startRowIndex - startFrom]? rows[startRowIndex - startFrom][dayIndex].events : null;
                                     if (eventSet) {
                                         eventSet.push(displayEvent);
