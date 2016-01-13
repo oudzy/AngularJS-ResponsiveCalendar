@@ -66,8 +66,8 @@ Default value: 'local'
 * rangeChanged    
 The callback function triggered when the range or mode is changed if the queryMode is set to 'remote'
 
-        $scope.rangeChanged = function (startTime, endTime) {
-            Events.query({startTime: startTime, endTime: endTime}, function(events){
+        $scope.rangeChanged = function (StartTime, EndTime) {
+            Events.query({StartTime: StartTime, EndTime: EndTime}, function(events){
                 $scope.eventSource=events;
             });
         };
@@ -124,17 +124,17 @@ Optional hide allDay events
 EventSource is an array of event object which contains at least below fields:
 
 * title
-* startTime    
-If allDay is set to true, the startTime has to be as a UTC date which time is set to 0:00 AM, because in an allDay event, only the date is considered, the exact time or timezone doesn't matter.    
-For example, if an allDay event starting from 2014-05-09, then startTime is
+* StartTime    
+If allDay is set to true, the StartTime has to be as a UTC date which time is set to 0:00 AM, because in an allDay event, only the date is considered, the exact time or timezone doesn't matter.    
+For example, if an allDay event starting from 2014-05-09, then StartTime is
 
-        var startTime = new Date(Date.UTC(2014, 4, 8));
+        var StartTime = new Date(Date.UTC(2014, 4, 8));
 
-* endTime    
-If allDay is set to true, the startTime has to be as a UTC date which time is set to 0:00 AM, because in an allDay event, only the date is considered, the exact time or timezone doesn't matter.    
-For example, if an allDay event ending to 2014-05-10, then endTime is
+* EndTime    
+If allDay is set to true, the StartTime has to be as a UTC date which time is set to 0:00 AM, because in an allDay event, only the date is considered, the exact time or timezone doesn't matter.    
+For example, if an allDay event ending to 2014-05-10, then EndTime is
 
-        var endTime = new Date(Date.UTC(2014, 4, 9));
+        var EndTime = new Date(Date.UTC(2014, 4, 9));
 
 * allDay    
 Indicates the event is allDay event or regular event

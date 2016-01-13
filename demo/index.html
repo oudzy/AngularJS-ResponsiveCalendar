@@ -27,8 +27,8 @@
 <section class="content" style="margin-top: 70px;">
     <section class="container">
         <section ng-controller="CalendarDemoCtrl" ng-init="loadEvents()">
-            <div class="alert alert-success" ng-show="event">Event selected:{{event.startTime|date:
-                'MMM/dd,yyyy,HH:mm'}} - {{event.endTime|date:'MMM/dd,yyyy,HH:mm'}}, {{event.title}}
+            <div class="alert alert-success" ng-show="event">Event selected:{{event.StartTime|date:
+                'MMM/dd,yyyy,HH:mm'}} - {{event.EndTime|date:'MMM/dd,yyyy,HH:mm'}}, {{event.title}}
             </div>
 
             <div class="btn-toolbar">
@@ -55,7 +55,7 @@
             </div>
             <div class="well well-sm">
                 <calendar ng-model="currentDate" calendar-mode="mode" event-source="eventSource"
-                          range-changed="reloadSource(startTime, endTime)"
+                          range-changed="reloadSource(StartTime, EndTime)"
                           event-selected="onEventSelected(event)"
                           show-title="false"
                           hide-weekend="true"

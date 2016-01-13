@@ -30,9 +30,9 @@
             <table class="table table-bordered table-striped table-fixed">
             <caption class="calendar-header text-left">{{eventType}}</caption>
                 <tr ng-repeat="event in selectedDate.events | filter:{ type: eventType }"  ng-click="eventSelected({event:event})" ng-if="hasEventsWithType(eventType)">
-                    <td ng-if="!event.allDay" ng-class="{'one-cell': !event.title}" class="monthview-eventdetail-timecolumn">{{event.startTime|date: 'HH:mm'}}
+                    <td ng-if="!event.allDay" ng-class="{'one-cell': !event.title}" class="monthview-eventdetail-timecolumn">{{event.StartTime|date: 'HH:mm'}}
                         -
-                        {{event.endTime|date: 'HH:mm'}}
+                        {{event.EndTime|date: 'HH:mm'}}
                     </td>
                     <td ng-if="event.allDay" ng-class="{'one-cell': !event.title}" class="monthview-eventdetail-timecolumn">{{$parent.allDayTitle ? $parent.allDayTitle : 'All day'}}</td>
                     <td ng-if="event.title" class="event-detail">{{event.title}}</td>
@@ -47,7 +47,7 @@
             <caption class="calendar-header text-left">{{eventType}}</caption>
                 <tr ng-repeat="event in selectedDate.events" ng-click="eventSelected({event:event})" ng-if="selectedDate.events">
                     <td ng-if="!event.allDay" ng-class="{'one-cell': !event.title}" class="monthview-eventdetail-timecolumn">
-                        {{event.startTime|date: 'HH:mm'}} - {{event.endTime|date: 'HH:mm'}}
+                        {{event.StartTime|date: 'HH:mm'}} - {{event.EndTime|date: 'HH:mm'}}
                     </td>
                     <td ng-if="event.allDay" ng-class="{'one-cell': !event.title}" class="monthview-eventdetail-timecolumn">{{$parent.allDayTitle ? $parent.allDayTitle : 'All day'}}</td>
                     <td ng-if="event.title" class="event-detail" >{{event.title}}</td>

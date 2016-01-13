@@ -37,29 +37,29 @@ angular.module('calendarDemoApp').controller('CalendarDemoCtrl', ['$scope', func
             var eventsType = Math.floor(Math.random() * 2);
             var startDay = Math.floor(Math.random() * 90) - 45;
             var endDay = Math.floor(Math.random() * 2) + startDay;
-            var startTime;
-            var endTime;
+            var StartTime;
+            var EndTime;
             if (eventType === 0) {
-                startTime = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate() + startDay));
+                StartTime = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate() + startDay));
                 if (endDay === startDay) {
                     endDay += 1;
                 }
-                endTime = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate() + endDay));
+                EndTime = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate() + endDay));
                 events.push({
                     title: 'All Day - ' + i,
-                    startTime: startTime,
-                    endTime: endTime,
+                    StartTime: StartTime,
+                    EndTime: EndTime,
                     allDay: true,
                     type: eventsTypes[eventsType]
                 });
             } else {
                 var startMinute = Math.floor(Math.random() * 24 * 60);
                 var endMinute = Math.floor(Math.random() * 180) + startMinute;
-                startTime = new Date(date.getFullYear(), date.getMonth(), date.getDate() + startDay, 0, date.getMinutes() + startMinute);
-                endTime = new Date(date.getFullYear(), date.getMonth(), date.getDate() + endDay, 0, date.getMinutes() + endMinute);
+                StartTime = new Date(date.getFullYear(), date.getMonth(), date.getDate() + startDay, 0, date.getMinutes() + startMinute);
+                EndTime = new Date(date.getFullYear(), date.getMonth(), date.getDate() + endDay, 0, date.getMinutes() + endMinute);
                 events.push({
-                    startTime: startTime,
-                    endTime: endTime,
+                    StartTime: StartTime,
+                    EndTime: EndTime,
                     allDay: false,
                     type: eventsTypes[eventsType]
                 });
