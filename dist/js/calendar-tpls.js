@@ -1205,7 +1205,7 @@ angular.module("template/rcalendar/week.html", []).run(["$templateCache", functi
     "                                 ng-click=\"eventSelected({event:displayEvent.event})\"\n" +
     "                                 ng-style=\"{top: 25*displayEvent.position+'px', width: 100*(displayEvent.endIndex-displayEvent.startIndex)+'%', height: '25px'}\">\n" +
     "                                <div class=\"calendar-event-inner\"\n" +
-    "                                    ng-class=\"displayEvent.event.type == null? '' : 'event-type-'+displayEvent.event.type\">\n" +
+    "                                    ng-class=\"displayEvent.event.typeID == null? '' : 'event-type-'+displayEvent.event.typeID\">\n" +
     "                                    {{showTitle ? displayEvent.event.title : ''}}\n" +
     "                                </div>\n" +
     "                            </div>\n" +
@@ -1230,7 +1230,7 @@ angular.module("template/rcalendar/week.html", []).run(["$templateCache", functi
     "                             ng-click=\"eventSelected({event:displayEvent.event})\"\n" +
     "                             ng-style=\"{left: 100/displayEvent.overlapNumber*displayEvent.position+'%', width: 100/displayEvent.overlapNumber+'%', height: 37*(displayEvent.endIndex-displayEvent.startIndex)+'px'}\">\n" +
     "                            <div class=\"calendar-event-inner\"\n" +
-    "                                ng-class=\"displayEvent.event.type == null? '' : 'event-type-'+displayEvent.event.type\">\n" +
+    "                                ng-class=\"displayEvent.event.typeID == null? '' : 'event-type-'+displayEvent.event.typeID\">\n" +
     "                                {{showTitle ? displayEvent.event.title : ''}}\n" +
     "                            </div>\n" +
     "                        </div>\n" +
