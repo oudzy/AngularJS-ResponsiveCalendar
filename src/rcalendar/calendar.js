@@ -377,6 +377,9 @@ angular.module('ui.rCalendar', [])
                         var weekNumber = getISO8601WeekNumber(scope.rows[0][0].date),
                             numWeeks = scope.rows.length,
                             len = 0;
+                        if (!ctrl.startingDay || ctrl.startingDay === 0) {
+                            weekNumber++;
+                        }
                         while (len < numWeeks) {
                             len = scope.weekNumbers.push(weekNumber);
                             weekNumber += 1;
@@ -537,8 +540,11 @@ angular.module('ui.rCalendar', [])
 
                 function getISO8601WeekNumber(date) {
                     var checkDate = new Date(date);
-                    var onejan = new Date(checkDate.getFullYear(), 0, 1);
-                    return Math.ceil((((checkDate - onejan) / 86400000) + onejan.getDay() + 1) / 7);
+                    checkDate.setDate(checkDate.getDate() + 4 - (checkDate.getDay() || 7)); // Thursday
+                    var time = checkDate.getTime();
+                    checkDate.setMonth(0); // Compare with Jan 1
+                    checkDate.setDate(1);
+                    return Math.floor(Math.round((time - checkDate) / 86400000) / 7) + 1;
                 }
 
                 ctrl.refreshView();
@@ -746,8 +752,6 @@ angular.module('ui.rCalendar', [])
                                         overlapNumber: 1,
                                         position: 0
                                     };
-                                    console.log('displayEvent');
-                                    console.log(displayEvent);
                                     eventSet = rows[startRowIndex - startFrom]? rows[startRowIndex - startFrom][dayIndex].events : null;
                                     if (eventSet) {
                                         eventSet.push(displayEvent);
@@ -831,8 +835,11 @@ angular.module('ui.rCalendar', [])
                 //This can be decomissioned when upgrade to Angular 1.3
                 function getISO8601WeekNumber(date) {
                     var checkDate = new Date(date);
-                    var onejan = new Date(checkDate.getFullYear(), 0, 1);
-                    return Math.ceil((((checkDate - onejan) / 86400000) + onejan.getDay() + 1) / 7);
+                    checkDate.setDate(checkDate.getDate() + 4 - (checkDate.getDay() || 7)); // Thursday
+                    var time = checkDate.getTime();
+                    checkDate.setMonth(0); // Compare with Jan 1
+                    checkDate.setDate(1);
+                    return Math.floor(Math.round((time - checkDate) / 86400000) / 7) + 1;
                 }
 
                 scope.getHour = function(index){
