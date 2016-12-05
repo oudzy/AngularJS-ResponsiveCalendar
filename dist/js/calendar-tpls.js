@@ -236,7 +236,7 @@ angular.module('ui.rCalendar', ['ui.rCalendar.tpls'])
         'use strict';
         return {
             restrict: 'EA',
-            replace: true,
+            replace: false,
             templateUrl: 'template/rcalendar/calendar.html',
             scope: {
                 calendarMode: '=',
@@ -275,7 +275,7 @@ angular.module('ui.rCalendar', ['ui.rCalendar.tpls'])
         'use strict';
         return {
             restrict: 'EA',
-            replace: true,
+            replace: false,
             templateUrl: 'template/rcalendar/month.html',
             require: ['^calendar', '?^ngModel'],
             link: function (scope, element, attrs, ctrls) {
@@ -538,11 +538,8 @@ angular.module('ui.rCalendar', ['ui.rCalendar.tpls'])
 
                 function getISO8601WeekNumber(date) {
                     var checkDate = new Date(date);
-                    checkDate.setDate(checkDate.getDate() + 4 - (checkDate.getDay() || 7)); // Thursday
-                    var time = checkDate.getTime();
-                    checkDate.setMonth(0); // Compare with Jan 1
-                    checkDate.setDate(1);
-                    return Math.floor(Math.round((time - checkDate) / 86400000) / 7) + 1;
+                    var onejan = new Date(checkDate.getFullYear(), 0, 1);
+                    return Math.ceil((((checkDate - onejan) / 86400000) + onejan.getDay() + 1) / 7);
                 }
 
                 ctrl.refreshView();
@@ -553,7 +550,7 @@ angular.module('ui.rCalendar', ['ui.rCalendar.tpls'])
         'use strict';
         return {
             restrict: 'EA',
-            replace: true,
+            replace: false,
             templateUrl: 'template/rcalendar/week.html',
             require: '^calendar',
             link: function (scope, element, attrs, ctrl) {
@@ -835,11 +832,8 @@ angular.module('ui.rCalendar', ['ui.rCalendar.tpls'])
                 //This can be decomissioned when upgrade to Angular 1.3
                 function getISO8601WeekNumber(date) {
                     var checkDate = new Date(date);
-                    checkDate.setDate(checkDate.getDate() + 4 - (checkDate.getDay() || 7)); // Thursday
-                    var time = checkDate.getTime();
-                    checkDate.setMonth(0); // Compare with Jan 1
-                    checkDate.setDate(1);
-                    return Math.floor(Math.round((time - checkDate) / 86400000) / 7) + 1;
+                    var onejan = new Date(checkDate.getFullYear(), 0, 1);
+                    return Math.ceil((((checkDate - onejan) / 86400000) + onejan.getDay() + 1) / 7);
                 }
 
                 scope.getHour = function(index){
