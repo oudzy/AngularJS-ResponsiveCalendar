@@ -375,15 +375,10 @@ angular.module('ui.rCalendar', ['ui.rCalendar.tpls'])
 
                     if (scope.showWeeks) {
                         scope.weekNumbers = [];
-                        var weekNumber = getISO8601WeekNumber(scope.rows[0][0].date),
-                            numWeeks = scope.rows.length,
-                            len = 0;
-                        if (!ctrl.startingDay || ctrl.startingDay === 0) {
-                            weekNumber++;
-                        }
-                        while (len < numWeeks) {
-                            len = scope.weekNumbers.push(weekNumber);
-                            weekNumber += 1;
+                        var numWeeks = scope.rows.length;
+                        for (var rowNum = 0; rowNum < numWeeks; rowNum++) {
+                            var weekNumber = getISO8601WeekNumber(scope.rows[rowNum][0].date);
+                            scope.weekNumbers.push(weekNumber);
                         }
                     }
                 };
@@ -541,7 +536,7 @@ angular.module('ui.rCalendar', ['ui.rCalendar.tpls'])
 
                 function getISO8601WeekNumber(date) {
                     var checkDate = new Date(date);
-                    checkDate.setDate(checkDate.getDate() + 4 - (checkDate.getDay() || 7)); // Thursday
+                    // checkDate.setDate(checkDate.getDate() + 4 - (checkDate.getDay() || 7)); // Thursday
                     var time = checkDate.getTime();
                     checkDate.setMonth(0); // Compare with Jan 1
                     checkDate.setDate(1);
@@ -574,10 +569,10 @@ angular.module('ui.rCalendar', ['ui.rCalendar.tpls'])
                 
                 function updateScrollGutter() {
                     var children = element.children();
-                    var allDayEventBody = children[1].children[1];
-                    var allDayEventGutterWidth = allDayEventBody.offsetWidth - allDayEventBody.clientWidth;
-                    var normalEventBody = children[2];
-                    var normalEventGutterWidth = normalEventBody.offsetWidth - normalEventBody.clientWidth;
+                    var allDayEventBody = children[1] ? children[1].children[1] : null;
+                    var allDayEventGutterWidth = allDayEventBody ? allDayEventBody.offsetWidth - allDayEventBody.clientWidth : 0;
+                    var normalEventBody = children[2]? children[2] : null;
+                    var normalEventGutterWidth = normalEventBody? normalEventBody.offsetWidth - normalEventBody.clientWidth : 0;
                     var gutterWidth = allDayEventGutterWidth || normalEventGutterWidth || 0;
                     if (gutterWidth > 0) {
                         scope.gutterWidth = gutterWidth;
