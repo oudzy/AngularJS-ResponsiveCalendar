@@ -285,7 +285,7 @@ angular.module('ui.rCalendar', ['ui.rCalendar.tpls'])
                 scope.showEventDetail = ctrl.showEventDetail;
 
                 scope.hasEventsWithType = function(eventType){
-                    if(scope.selectedDate.events === undefined)
+                    if(scope.selectedDate && scope.selectedDate.events === undefined)
                         return false;
                     var hasThisType = false,
                         events = scope.selectedDate.events;
